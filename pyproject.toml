@@ -1,0 +1,107 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "datacite_schema"
+version = "0.1.0"
+description = "Tool to easily work with the datacite schema."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {file = "LICENSE"}
+keywords = ["ckan", "data management", "open data"]
+authors = [
+    {email = "christian.foerster@eawag.ch"},
+    {name = "Christian Foerster"}
+]
+maintainers = [
+    {name = "Christian Foerster", email = "christian.foerster@eawag.ch"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python"
+]
+
+dependencies = [
+    "xsdata-pydantic[cli,lxml,soap]"
+]
+
+[project.scripts]
+ckool = "ckool.__main__:app"
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "requests",
+    "ruff",
+]
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore:'cgi' is deprecated and slated for removal in Python 3.13:DeprecationWarning",
+]
+env =[
+]
+
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist = py311,py312
+isolated_build = True
+tox_pyenv_fallback=False
+
+[testenv]
+deps =
+    pip
+    format: black
+    pytest
+commands =
+    pip install .[dev]
+    pytest {posargs}
+"""
+
+[tool.ruff]
+fix = true
+fix-only = true
+show-fixes = true
+src = ["src", "tests"]
+
+#format = "json"
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".egg-info",
+    ".env",
+    ".benchmarks",
+    ".git",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".python-version",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
+
+# Same as Black.
+line-length = 88
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+# Always generate Python 3.7-compatible code.
+target-version = "py310"
+
